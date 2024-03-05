@@ -66,12 +66,15 @@ const images = [
     
 const imgGallery = document.querySelector(".gallery")
     imgGallery.insertAdjacentHTML("beforeend", itemsGallery(images));
-    imgGallery.addEventListener("click",handle);
-    function handle (event) {
-        if(event.currentTarget === event.target) return
+    imgGallery.addEventListener("click",onGalleryItemClick);
+    function onGalleryItemClick(event) {
+        if(event.target.nodeName !== 'IMG') return;
+        event.preventDefault();
         console.log(event.target.closest(".gallery-item"))
-        const currentImg = event.target.closest(".gallery-item")
-        const lightbox = basicLightbox.create(`<img src="${currentImg.querySelector('img').getAttribute('src')}">`);
+        
+        const originalSource = event.target.getAttribute('data-source');
+    
+        const lightbox = basicLightbox.create(`<img src="${originalSource}">`);
         lightbox.show();
     }
 function itemsGallery (arr) {
